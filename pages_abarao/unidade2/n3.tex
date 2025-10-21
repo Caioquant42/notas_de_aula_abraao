@@ -1,0 +1,31 @@
+\textbf{Ex:} $n^2 = O(6n^2 + n)$ pois
+\begin{equation}
+\frac{n^2}{6n^2 + n} = \frac{1}{6 + n^{-1}} \leq \frac{1}{6}, \quad \forall n \geq 1
+\end{equation}
+
+\[
+\frac{n^2}{6n^2 + n} = \frac{1}{6 + n^{-1}} \leq \frac{1}{6 + (1)^{-1}} = \frac{1}{7}
+\]
+
+$a_n = \theta(b_n)$ se, sse, $\forall \varepsilon > 0, \exists n_0 = n_0(\varepsilon): \frac{a_n}{b_n} \leq \varepsilon, \ \forall n \geq n_0$, isto é, $\lim_{n \to \infty} \frac{a_n}{b_n} = 0$. Em particular, $a_n = \theta(1)$ implica que
+\begin{equation}
+\lim_{n \to \infty} a_n = 0
+\end{equation}
+
+\textbf{Ex:} $n = \theta(n^2)$ pois
+\begin{equation}
+\frac{n}{n^2} = \frac{1}{n} \xrightarrow[n \to \infty]{} 0
+\end{equation}
+
+\textbf{Ex:} $n^{-1} = \theta(1)$ pois
+\begin{equation}
+\frac{1}{n} \xrightarrow[n \to \infty]{} 0
+\end{equation}
+
+\textbf{Teorema (Extra 1) [Propriedades de $O(\cdot)$ e $\theta(\cdot)$]} \\
+Sejam $\{a_n, n \geq 1\}$, $\{b_n, n \geq 1\}$, $\{c_n, n \geq 1\}$ e $\{d_n, n \geq 1\}$ sequências de números reais, valem-se:
+
+\begin{itemize}
+    \item[(i)] Se $a_n = O(b_n)$, então $a_n = o(b_n)$.
+    \item[(ii)] Se $a_n = O(b_n)$ e $c_n = O(d_n)$, então ...
+\end{itemize}

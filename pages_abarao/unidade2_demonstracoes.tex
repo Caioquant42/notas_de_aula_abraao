@@ -1,0 +1,507 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\usepackage{enumerate}
+\usepackage{array}
+
+% Definições de ambientes
+\theoremstyle{plain}
+\newtheorem{teorema}{Teorema}[section]
+\newtheorem{lema}[teorema]{Lema}
+\theoremstyle{definition}
+\newtheorem{definicao}[teorema]{Definição}
+\theoremstyle{remark}
+\newtheorem{observacao}[teorema]{Observação}
+
+\title{Demonstrações dos Teoremas - Unidade 2\\
+\large Convergência Estocástica e Resultados Limite\\
+\normalsize Todas as Provas Apresentadas em Aula}
+\author{Curso de Inferência Estatística}
+\date{Outubro 2025}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introdução}
+
+Este documento contém todas as demonstrações de teoremas apresentadas nas aulas da Unidade 2. O objetivo é fornecer um material de estudo organizado para preparação para as avaliações, onde demonstrações são frequentemente cobradas.
+
+Ao final do documento, apresentamos um \textbf{ranking de prioridade} das demonstrações mais importantes para estudo, considerando complexidade técnica, importância fundamental e aplicabilidade em questões.
+
+\section{Resultado 1P: Lei Fraca dos Grandes Números (Versão Simples)}
+
+\begin{teorema}[LFGN - Versão Simples]
+Sejam $X_1, \ldots, X_n$ v.a.'s i.i.d. com $\mathbb{E}(X_i) = \mu < \infty$ e $\mathrm{Var}(X_i) = \sigma^2 < \infty$. Então:
+\[
+\overline{X}_n \xrightarrow{P}_{n \to \infty} \mu
+\]
+\end{teorema}
+
+\begin{proof}
+Para um $\varepsilon > 0$ qualquer, pela desigualdade de Chebyshev:
+\begin{align}
+P\left( \left| \overline{X}_n - \mu \right| \geq \varepsilon \right) &= P\left( \left( \overline{X}_n - \mu \right)^2 \geq \varepsilon^2 \right) \\
+&\leq \varepsilon^{-2} \, \mathbb{E} \left[ \left( \overline{X}_n - \mu \right)^2 \right] \\
+&= \varepsilon^{-2} \, \mathrm{Var}(\overline{X}_n) \\
+&= \varepsilon^{-2} \, \mathrm{Var}\left(\frac{1}{n}\sum_{i=1}^n X_i\right) \\
+&= \varepsilon^{-2} \cdot \frac{1}{n^2} \sum_{i=1}^n \mathrm{Var}(X_i) \quad \text{(independência)} \\
+&= \varepsilon^{-2} \cdot \frac{n\sigma^2}{n^2} \\
+&= \frac{\sigma^2}{n \, \varepsilon^2} \xrightarrow{n \to \infty} 0
+\end{align}
+
+Logo, $\overline{X}_n \xrightarrow{P}_{n \to \infty} \mu$.
+\end{proof}
+
+\begin{observacao}[Pontos-chave da demonstração]
+\begin{enumerate}
+    \item Uso da desigualdade de Chebyshev para limitar a probabilidade
+    \item Cálculo da variância da média amostral: $\mathrm{Var}(\bar{X}_n) = \sigma^2/n$
+    \item A taxa de convergência é $O(1/n)$
+\end{enumerate}
+\end{observacao}
+
+\section{Resultado 2P: Convergência via Momentos}
+
+\begin{teorema}[Convergência via Momentos]
+Sejam $\{T_n, n \geq 1\}$ uma sequência de variáveis aleatórias tais que para algum $r \geq 0$ e $a \in \mathbb{R}$ vale:
+\[
+\mathbb{E}\left[|T_n - a|^r\right] \xrightarrow{n \to \infty} 0
+\]
+Então $T_n \xrightarrow{P}_{n \to \infty} a$.
+\end{teorema}
+
+\begin{proof}
+Para qualquer $\varepsilon > 0$, pela desigualdade de Markov:
+\begin{align}
+P\{|T_n - a| \geq \varepsilon\} &= P\{|T_n - a|^r \geq \varepsilon^r\} \\
+&\leq \frac{\mathbb{E}[|T_n - a|^r]}{\varepsilon^r}
+\end{align}
+
+Como por hipótese $\mathbb{E}[|T_n - a|^r] \xrightarrow{n \to \infty} 0$, temos:
+\[
+P\{|T_n - a| \geq \varepsilon\} \leq \frac{\mathbb{E}[|T_n - a|^r]}{\varepsilon^r} \xrightarrow{n \to \infty} 0
+\]
+
+Portanto, $T_n \xrightarrow{P}_{n \to \infty} a$.
+\end{proof}
+
+\begin{observacao}[Utilidade]
+Este resultado é muito útil porque:
+\begin{enumerate}
+    \item Basta verificar convergência de momentos (mais fácil de calcular)
+    \item Funciona para qualquer $r > 0$, incluindo $r = 2$ (convergência em média quadrática)
+    \item É frequentemente usado para provar que $S_n^2 \xrightarrow{P} \sigma^2$
+\end{enumerate}
+\end{observacao}
+
+\section{Resultado 3P: Lei Fraca dos Grandes Números de Khinchin}
+
+\begin{teorema}[LFGN de Khinchin]
+Sejam $X_1, \ldots, X_n$ v.a.'s reais i.i.d. com $E[X_i] = \mu < \infty$. Então:
+\[
+\overline{X}_n \xrightarrow{P}_{n \to \infty} \mu
+\]
+\end{teorema}
+
+\begin{proof}
+Sejam $M_{\overline{X}_n}(t)$ e $M_{X_i}(t)$ as f.m.g. de $\overline{X}_n = \frac{1}{n} \sum_{i=1}^n X_i$ e $X_i$, respectivamente.
+
+Para $t \in \mathbb{R}$:
+\begin{align}
+M_{\overline{X}_n}(t) &= M_{\frac{S_n}{n}}(t) = \mathbb{E}\left[e^{t\frac{S_n}{n}}\right] \\
+&= \mathbb{E}\left[e^{\frac{t}{n}\sum_{i=1}^n X_i}\right] \\
+&= \prod_{i=1}^n M_{X_i}\left(\frac{t}{n}\right) \quad \text{(independência)} \\
+&= \left[ M_{X_1}\left(\frac{t}{n}\right) \right]^n \quad \text{(identicamente distribuídas)}
+\end{align}
+
+Expandindo $M_{X_1}\left(\frac{t}{n}\right)$ em série de Taylor em torno de zero até a 1ª ordem:
+
+Dado que $M_{X_1}(0) = 1$ e $M'_{X_1}(0) = \mu$, temos:
+\begin{align}
+M_{X_1}\left(\frac{t}{n}\right) &= M_{X_1}(0) + M'_{X_1}(0) \frac{t}{n} + o\left(\frac{t}{n}\right) \\
+&= 1 + \mu \frac{t}{n} + o\left(\frac{t}{n}\right)
+\end{align}
+
+Portanto:
+\[
+M_{\overline{X}_n}(t) = \left[ 1 + \frac{\mu t}{n} + o\left(\frac{t}{n}\right) \right]^n
+\]
+
+Usando o resultado limite $(R.3)$: $\left(1 + \frac{k}{n}\right)^n \xrightarrow{n \to \infty} e^k$:
+\[
+M_{\overline{X}_n}(t) \xrightarrow{n \to \infty} e^{t\mu} = M_{\mu}(t)
+\]
+
+Como a variável limite é degenerada em $\mu$, temos $\overline{X}_n \xrightarrow{P}_{n \to \infty} \mu$.
+\end{proof}
+
+\begin{observacao}[Vantagem sobre Resultado 1P]
+Esta versão não requer variância finita, apenas média finita. É mais geral e poderosa!
+\end{observacao}
+
+\section{Resultado 5P: Teorema da Função Contínua}
+
+\begin{teorema}[Teorema da Função Contínua para Convergência em Probabilidade]
+Sejam $\{U_n, n \geq 1\}$ uma sequência de v.a.'s tal que $U_n \xrightarrow{P} u$ e $g(\cdot)$ uma função contínua. Então:
+\[
+g(U_n) \xrightarrow{P}{n \to \infty} g(u)
+\]
+\end{teorema}
+
+\begin{proof}
+Note que se $g(x)$ é contínua em $x = u$, então pela definição de continuidade: dado algum $\varepsilon > 0$, existe $\delta > 0$ tal que
+\[
+|x - u| < \delta \quad \Rightarrow \quad |g(x) - g(u)| < \varepsilon
+\]
+
+Equivalentemente, pela contrapositiva:
+\[
+|g(x) - g(u)| \geq \varepsilon \quad \Rightarrow \quad |x - u| \geq \delta
+\]
+
+Portanto, para $n$ suficientemente grande:
+\begin{align}
+0 &\leq P\left( |g(U_n) - g(u)| \geq \varepsilon \right) \\
+&\leq P\left( |U_n - u| \geq \delta \right)
+\end{align}
+
+Como $U_n \xrightarrow{P} u$, sabemos que $P\left( |U_n - u| \geq \delta \right) \xrightarrow{n \to \infty} 0$.
+
+Pelo teorema do confronto (squeeze theorem):
+\[
+P\left( |g(U_n) - g(u)| \geq \varepsilon \right) \xrightarrow{n \to \infty} 0
+\]
+
+Portanto, $g(U_n) \xrightarrow{P}{n \to \infty} g(u)$. \qed
+\end{proof}
+
+\begin{observacao}[Aplicação Importante]
+Este teorema permite:
+\begin{enumerate}
+    \item Se $\bar{X}_n \xrightarrow{P} \mu$, então $(\bar{X}_n)^2 \xrightarrow{P} \mu^2$
+    \item Se $S_n^2 \xrightarrow{P} \sigma^2$, então $S_n \xrightarrow{P} \sigma$
+    \item Transformações de estimadores consistentes são consistentes
+\end{enumerate}
+\end{observacao}
+
+\section{Teorema de Slutsky (Resultado 3D/39)}
+
+\begin{teorema}[Teorema de Slutsky]
+Sejam $\{U_n, n \geq 1\}$ e $\{V_n, n \geq 1\}$ duas sequências de v.a.'s tais que
+\[
+U_n \xrightarrow{d} U \quad \text{e} \quad V_n \xrightarrow{p} v \text{ (constante)}
+\]
+Então:
+\begin{enumerate}
+    \item $U_n + V_n \xrightarrow{d} U + v$
+    \item $U_n V_n \xrightarrow{d} U \cdot v$
+    \item $U_n / V_n \xrightarrow{d} U / v$, assumindo que $P(V_n = 0) = 0$, $\forall n$ e $v \neq 0$
+\end{enumerate}
+\end{teorema}
+
+\begin{proof}[Esboço da prova do item (ii)]
+Vamos provar que $U_n V_n \xrightarrow{d} U \cdot v$.
+
+Podemos escrever:
+\[
+U_n V_n = U_n v + U_n(V_n - v)
+\]
+
+Precisamos mostrar que:
+\begin{enumerate}
+    \item $U_n v \xrightarrow{d} U v$ (multiplicação por constante preserva convergência em distribuição)
+    \item $U_n(V_n - v) \xrightarrow{P} 0$
+\end{enumerate}
+
+Para o item (2): Como $U_n \xrightarrow{d} U$, a sequência $\{U_n\}$ é limitada em probabilidade, isto é, para qualquer $\eta > 0$, existe $M > 0$ tal que $P(|U_n| > M) < \eta$ para $n$ suficientemente grande.
+
+Como $V_n \xrightarrow{p} v$, para qualquer $\delta > 0$, temos $P(|V_n - v| > \delta) \to 0$.
+
+Portanto:
+\begin{align}
+P(|U_n(V_n - v)| > \varepsilon) &\leq P(|U_n| > M) + P(|U_n| \leq M, |V_n - v| > \varepsilon/M) \\
+&< \eta + P(|V_n - v| > \varepsilon/M) \\
+&\to \eta \quad \text{quando } n \to \infty
+\end{align}
+
+Como $\eta$ é arbitrário, $U_n(V_n - v) \xrightarrow{P} 0$.
+
+Pelo teorema de Slutsky para soma, $U_n V_n = U_n v + U_n(V_n - v) \xrightarrow{d} Uv + 0 = Uv$. \qed
+\end{proof}
+
+\begin{observacao}[Importância Prática]
+O Teorema de Slutsky é essencial para:
+\begin{itemize}
+    \item Substituir $\sigma$ por $S_n$ em estatísticas assintóticas
+    \item Construir intervalos de confiança com parâmetros estimados
+    \item Desenvolver testes de hipóteses práticos
+\end{itemize}
+\end{observacao}
+
+\section{Teorema Central do Limite (Resultado 3.7.6.1(a))}
+
+\begin{teorema}[TCL - Lindeberg-Lévy]
+Sejam $X_1, \ldots, X_n$ v.a.'s i.i.d. com $\mu = \mathbb{E}\{X_i\} < \infty$ e $\sigma^2 = \mathrm{Var}\{X_i\} < \infty$. Então:
+\[
+Z_n = \sqrt{n} \left( \frac{\bar{X}_n - \mu}{\sigma} \right) = \frac{\sqrt{n}(\bar{X}_n - \mu)}{\sigma} \xrightarrow{d} N(0,1), \quad n \to \infty
+\]
+\end{teorema}
+
+\begin{proof}[Esboço usando função geradora de momentos]
+Defina $Y_i = \frac{X_i - \mu}{\sigma}$, então $Y_i$ são i.i.d. com $\mathbb{E}[Y_i] = 0$ e $\mathrm{Var}(Y_i) = 1$.
+
+Note que:
+\[
+Z_n = \frac{\sqrt{n}(\bar{X}_n - \mu)}{\sigma} = \sqrt{n} \cdot \frac{1}{n}\sum_{i=1}^n \frac{X_i - \mu}{\sigma} = \frac{1}{\sqrt{n}}\sum_{i=1}^n Y_i
+\]
+
+A f.m.g. de $Z_n$ é:
+\begin{align}
+M_{Z_n}(t) &= \mathbb{E}\left[\exp\left(\frac{t}{\sqrt{n}}\sum_{i=1}^n Y_i\right)\right] \\
+&= \prod_{i=1}^n \mathbb{E}\left[\exp\left(\frac{t}{\sqrt{n}} Y_i\right)\right] \\
+&= \left[\mathbb{E}\left[e^{\frac{t}{\sqrt{n}} Y_1}\right]\right]^n \\
+&= \left[M_{Y_1}\left(\frac{t}{\sqrt{n}}\right)\right]^n
+\end{align}
+
+Expandindo $M_{Y_1}(s)$ em série de Taylor em torno de $s = 0$:
+\[
+M_{Y_1}(s) = M_{Y_1}(0) + M'_{Y_1}(0) s + \frac{M''_{Y_1}(0)}{2} s^2 + o(s^2)
+\]
+
+Como $\mathbb{E}[Y_1] = 0$ e $\mathrm{Var}(Y_1) = 1$:
+\begin{itemize}
+    \item $M_{Y_1}(0) = 1$
+    \item $M'_{Y_1}(0) = \mathbb{E}[Y_1] = 0$
+    \item $M''_{Y_1}(0) = \mathbb{E}[Y_1^2] = 1$
+\end{itemize}
+
+Portanto:
+\[
+M_{Y_1}\left(\frac{t}{\sqrt{n}}\right) = 1 + 0 + \frac{1}{2} \cdot \frac{t^2}{n} + o\left(\frac{t^2}{n}\right) = 1 + \frac{t^2}{2n} + o\left(\frac{1}{n}\right)
+\]
+
+Logo:
+\[
+M_{Z_n}(t) = \left[1 + \frac{t^2}{2n} + o\left(\frac{1}{n}\right)\right]^n
+\]
+
+Usando o fato que $\left(1 + \frac{a}{n}\right)^n \to e^a$:
+\[
+M_{Z_n}(t) \xrightarrow{n \to \infty} e^{t^2/2} = M_Z(t)
+\]
+onde $Z \sim N(0,1)$.
+
+Pelo teorema de continuidade de Lévy, $Z_n \xrightarrow{d} N(0,1)$. \qed
+\end{proof}
+
+\begin{observacao}[Complexidade da Demonstração]
+Esta é uma das provas mais técnicas do curso, envolvendo:
+\begin{enumerate}
+    \item Manipulação de funções geradoras de momentos
+    \item Expansão em série de Taylor
+    \item Resultados limites clássicos
+    \item Teorema de continuidade de Lévy
+\end{enumerate}
+\end{observacao}
+
+\section{Teorema de Mann-Wald / Método Delta (3.7.6.2(a))}
+
+\begin{teorema}[Teorema de Mann-Wald (Método Delta)]
+Seja $\{T_n, n \geq 1\}$ uma sequência de v.a.'s reais tais que
+\[
+\sqrt{n} \, (T_n - \theta) \xrightarrow{n \to \infty} N\left(0, \sigma^2(\theta)\right)
+\]
+Seja $g(\cdot)$ uma função contínua de valor real com derivada $g'(\theta)$ finita e não nula. Então:
+\[
+\sqrt{n} \left[ g(T_n) - g(\theta) \right] \xrightarrow{n \to \infty} N\left(0, \sigma^2(\theta) \, [g'(\theta)]^2 \right)
+\]
+\end{teorema}
+
+\begin{proof}
+Considere:
+\[
+\sqrt{n} \left[ g(T_n) - g(\theta) \right] = U_n \cdot V_n
+\]
+onde
+\[
+U_n = \sqrt{n} (T_n - \theta) \quad \text{e} \quad V_n = \frac{g(T_n) - g(\theta)}{T_n - \theta}
+\]
+
+Por hipótese, $U_n \xrightarrow{d} N(0, \sigma^2(\theta))$.
+
+Note que:
+\[
+T_n - \theta = \frac{U_n}{\sqrt{n}}
+\]
+
+Como $U_n \xrightarrow{d} N(0, \sigma^2)$ (limitado em distribuição) e $\frac{1}{\sqrt{n}} \xrightarrow{P} 0$, pelo Teorema de Slutsky:
+\[
+T_n - \theta = U_n \cdot \frac{1}{\sqrt{n}} \xrightarrow{P} 0
+\]
+
+Portanto, $T_n \xrightarrow{P} \theta$.
+
+Agora, pela definição de derivada:
+\[
+g'(\theta) = \lim_{x \to \theta} \frac{g(x) - g(\theta)}{x - \theta}
+\]
+
+Como $T_n \xrightarrow{P} \theta$ e a função $h(x) = \frac{g(x) - g(\theta)}{x - \theta}$ tem limite $g'(\theta)$ quando $x \to \theta$ (por continuidade de $g'$ em $\theta$), temos:
+\[
+V_n = h(T_n) \xrightarrow{P} g'(\theta)
+\]
+
+Aplicando o Teorema de Slutsky com $U_n \xrightarrow{d} N(0, \sigma^2)$ e $V_n \xrightarrow{P} g'(\theta)$:
+\[
+\sqrt{n} \left[ g(T_n) - g(\theta) \right] = U_n \cdot V_n \xrightarrow{d} N(0, \sigma^2) \cdot g'(\theta) = N\left(0, [g'(\theta)]^2 \sigma^2\right)
+\]
+\qed
+\end{proof}
+
+\begin{observacao}[Estrutura da Prova]
+A prova combina elegantemente:
+\begin{enumerate}
+    \item Aproximação de Taylor de primeira ordem (implicitamente via definição de derivada)
+    \item Teorema de Slutsky (duas vezes!)
+    \item Teorema da função contínua
+\end{enumerate}
+É uma demonstração que sintetiza várias ferramentas do curso.
+\end{observacao}
+
+\newpage
+\section{Ranking de Prioridade das Demonstrações}
+
+Esta seção apresenta um ranking das demonstrações mais importantes para estudo, considerando três critérios com pesos diferentes:
+\begin{itemize}
+    \item \textbf{Complexidade Técnica} (30\%): Dificuldade matemática e número de passos
+    \item \textbf{Importância Fundamental} (40\%): Base para outros resultados e centralidade no curso
+    \item \textbf{Aplicabilidade em Questões} (30\%): Frequência de uso em exercícios e exames
+\end{itemize}
+
+\subsection{Tabela de Avaliação}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Teorema} & \textbf{Compl.} & \textbf{Import.} & \textbf{Aplic.} & \textbf{Nota Final} \\
+ & (0-10) & (0-10) & (0-10) & (ponderada) \\
+\hline
+TCL & 9.5 & 10 & 10 & \textbf{9.85} \\
+\hline
+Método Delta (Mann-Wald) & 8.5 & 9 & 9.5 & \textbf{8.95} \\
+\hline
+Teorema de Slutsky & 7.0 & 9.5 & 9.0 & \textbf{8.65} \\
+\hline
+LFGN de Khinchin & 8.0 & 8.5 & 7.5 & \textbf{8.05} \\
+\hline
+Teorema da Função Contínua & 6.0 & 8.0 & 8.0 & \textbf{7.40} \\
+\hline
+LFGN Versão Simples & 5.0 & 7.5 & 7.0 & \textbf{6.65} \\
+\hline
+Convergência via Momentos & 4.5 & 7.0 & 6.5 & \textbf{6.10} \\
+\hline
+\end{tabular}
+\caption{Avaliação e ranking dos teoremas}
+\end{table}
+
+\subsection{Ranking Final: Top 5 Demonstrações}
+
+\subsubsection{1º Lugar: Teorema Central do Limite (Nota: 9.85)}
+
+\textbf{Por que estudar em detalhes:}
+\begin{itemize}
+    \item É o teorema mais importante da estatística
+    \item Demonstração mais complexa e técnica do curso
+    \item Utiliza múltiplas ferramentas: fmg, série de Taylor, resultados limite
+    \item Praticamente garantido ser cobrado em avaliações
+    \item Base para toda inferência estatística assintótica
+\end{itemize}
+
+\textbf{Dica de estudo:} Entenda cada passo da expansão em série de Taylor e como os resultados limite (R.2) e (R.3) são aplicados.
+
+\subsubsection{2º Lugar: Método Delta / Teorema de Mann-Wald (Nota: 8.95)}
+
+\textbf{Por que estudar em detalhes:}
+\begin{itemize}
+    \item Síntese elegante de várias técnicas (Slutsky, função contínua)
+    \item Extremamente prático para questões de transformações
+    \item Demonstração que mostra maturidade matemática
+    \item Frequentemente aparece em questões aplicadas
+\end{itemize}
+
+\textbf{Dica de estudo:} Foque na estrutura da prova: decomposição em $U_n \cdot V_n$, depois aplicação dupla de Slutsky.
+
+\subsubsection{3º Lugar: Teorema de Slutsky (Nota: 8.65)}
+
+\textbf{Por que estudar em detalhes:}
+\begin{itemize}
+    \item Ferramenta essencial para questões práticas
+    \item Permite trabalhar com parâmetros desconhecidos
+    \item Prova relativamente acessível mas profunda
+    \item Usado na prova do Método Delta
+\end{itemize}
+
+\textbf{Dica de estudo:} Entenda o conceito de "limitado em probabilidade" e como ele é usado na prova.
+
+\subsubsection{4º Lugar: LFGN de Khinchin (Nota: 8.05)}
+
+\textbf{Por que estudar em detalhes:}
+\begin{itemize}
+    \item Versão mais geral que a LFGN simples
+    \item Usa técnica de fmg similar ao TCL (boa preparação)
+    \item Demonstração de complexidade média
+    \item Fundamento para consistência de estimadores
+\end{itemize}
+
+\textbf{Dica de estudo:} Compare com a prova do TCL para ver as similaridades e diferenças na técnica.
+
+\subsubsection{5º Lugar: Teorema da Função Contínua (Nota: 7.40)}
+
+\textbf{Por que estudar em detalhes:}
+\begin{itemize}
+    \item Prova elegante e relativamente simples
+    \item Usa conceitos básicos de continuidade de forma sofisticada
+    \item Ferramenta útil em várias aplicações
+    \item Boa para entender a estrutura de provas de convergência
+\end{itemize}
+
+\textbf{Dica de estudo:} Foque no uso da contrapositiva e do teorema do confronto.
+
+\subsection{Estratégia de Estudo Recomendada}
+
+\begin{enumerate}
+    \item \textbf{Primeira semana:} Estude profundamente o TCL (1º lugar). Refaça a prova múltiplas vezes até dominar.
+    
+    \item \textbf{Segunda semana:} Método Delta e Slutsky (2º e 3º lugares). Veja como trabalham juntos.
+    
+    \item \textbf{Terceira semana:} LFGN de Khinchin e Função Contínua (4º e 5º lugares).
+    
+    \item \textbf{Revisão:} Compare as técnicas comuns entre as provas (Slutsky aparece em várias).
+    
+    \item \textbf{Prática:} Resolva exercícios aplicando cada teorema para fixar quando usar cada um.
+\end{enumerate}
+
+\subsection{Observações Finais}
+
+\begin{itemize}
+    \item As provas dos resultados 1P e 2P (LFGN simples e convergência via momentos) são mais diretas e servem como "aquecimento"
+    
+    \item O TCL é o "ápice técnico" - domine-o e as outras provas parecerão mais acessíveis
+    
+    \item Entender \emph{por que} cada teorema é verdadeiro é tão importante quanto saber os passos da prova
+    
+    \item Em avaliações, provas de TCL e Método Delta geralmente valem mais pontos
+\end{itemize}
+
+\end{document}
+
