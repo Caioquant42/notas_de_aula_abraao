@@ -1,0 +1,22 @@
+\textbf{(A3)} 
+\begin{equation}
+0 < I_X(\theta) \triangleq \mathbb{E}_\theta \left[ \left( \frac{\partial \log f(x; \theta)}{\partial \theta} \right)^2 \right] < \infty, \quad \forall \theta \in \Theta
+\end{equation}
+
+\textbf{(A4)} Para cada $\theta_0 \in \Theta$, $\exists \ \varepsilon = \varepsilon(\theta_0) > 0$
+\begin{equation}
+\left| \frac{\partial^3 \log f(x; \theta)}{\partial \theta^3} \right| \leq g(x), \quad \forall \theta \in [\theta_0 - \varepsilon, \theta_0 + \varepsilon],
+\end{equation}
+em que
+\begin{equation}
+\int_X g(x) f(x; \theta) \, dx < \infty.
+\end{equation}
+
+\textbf{(A5)} A equação de verossimilhança
+\begin{equation}
+\frac{\partial l(\theta)}{\partial \theta} = 0 \quad \Leftrightarrow \quad \sum_{i=1}^n \frac{\partial \log f(x_i; \theta)}{\partial \theta} = 0
+\end{equation}
+tem uma solução consistente $\hat{\theta}_n$. Então
+\begin{equation}
+\sqrt{n} (\hat{\theta}_n - \theta_0) \xrightarrow[n \to \infty]{d} N\left(0, I_X^{-1}(\theta_0)\right).
+\end{equation}

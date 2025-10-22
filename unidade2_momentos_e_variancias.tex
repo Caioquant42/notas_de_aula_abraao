@@ -1,0 +1,1337 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\usepackage{enumerate}
+\usepackage{array}
+
+% Definições de ambientes
+\theoremstyle{plain}
+\newtheorem{teorema}{Teorema}[section]
+\theoremstyle{definition}
+\newtheorem{definicao}[teorema]{Definição}
+\newtheorem{proposicao}[teorema]{Proposição}
+\theoremstyle{remark}
+\newtheorem{observacao}[teorema]{Observação}
+
+\title{Demonstrações de Momentos e Variâncias\\
+\large Cálculo de \(E(X)\) e \(\text{Var}(X)\) para Distribuições Fundamentais\\
+\normalsize Duas Abordagens: Definição e Função Geradora de Momentos}
+\author{Curso de Inferência Estatística}
+\date{Outubro 2025}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introdução}
+
+Este caderno apresenta demonstrações completas e detalhadas dos cálculos de média \(E(X)\) e variância \(\text{Var}(X)\) para as principais distribuições de probabilidade. Para cada distribuição, apresentamos \textbf{duas abordagens complementares}:
+
+\subsection{Abordagem 1: Pela Definição}
+
+Calculamos diretamente usando as definições fundamentais:
+
+\textbf{Para variáveis discretas:}
+\[
+E(X) = \sum_{x} x \cdot P(X = x)
+\]
+\[
+E(X^2) = \sum_{x} x^2 \cdot P(X = x)
+\]
+\[
+\text{Var}(X) = E(X^2) - [E(X)]^2
+\]
+
+\textbf{Para variáveis contínuas:}
+\[
+E(X) = \int_{-\infty}^{\infty} x \cdot f(x) \, dx
+\]
+\[
+E(X^2) = \int_{-\infty}^{\infty} x^2 \cdot f(x) \, dx
+\]
+\[
+\text{Var}(X) = E(X^2) - [E(X)]^2
+\]
+
+\subsection{Abordagem 2: Pela Função Geradora de Momentos}
+
+A função geradora de momentos (FGM ou MGF) é definida como:
+\[
+M_X(t) = E[e^{tX}]
+\]
+
+Quando existe, permite calcular momentos através de derivadas:
+\[
+E(X) = M'_X(0) = \left. \frac{d}{dt} M_X(t) \right|_{t=0}
+\]
+\[
+E(X^2) = M''_X(0) = \left. \frac{d^2}{dt^2} M_X(t) \right|_{t=0}
+\]
+\[
+\text{Var}(X) = M''_X(0) - [M'_X(0)]^2
+\]
+
+\subsection{Ferramentas Matemáticas Importantes}
+
+As demonstrações utilizam várias técnicas fundamentais:
+
+\begin{enumerate}
+    \item \textbf{Binômio de Newton:} 
+    \[
+    (a + b)^n = \sum_{k=0}^n \binom{n}{k} a^{n-k} b^k
+    \]
+    
+    \item \textbf{Série Geométrica:}
+    \[
+    \sum_{k=0}^{\infty} r^k = \frac{1}{1-r}, \quad |r| < 1
+    \]
+    
+    \item \textbf{Expansão de Taylor:}
+    \[
+    e^x = \sum_{k=0}^{\infty} \frac{x^k}{k!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots
+    \]
+    
+    \item \textbf{Função Gamma:}
+    \[
+    \Gamma(\alpha) = \int_0^{\infty} x^{\alpha-1} e^{-x} \, dx, \quad \Gamma(\alpha+1) = \alpha \Gamma(\alpha)
+    \]
+    
+    \item \textbf{Função Beta:}
+    \[
+    B(\alpha, \beta) = \int_0^1 x^{\alpha-1}(1-x)^{\beta-1} \, dx = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}
+    \]
+    
+    \item \textbf{Integração por Partes:}
+    \[
+    \int u \, dv = uv - \int v \, du
+    \]
+    
+    \item \textbf{Mudança de Índice em Somatórios:} Técnica essencial para simplificar somas
+    
+    \item \textbf{Completar Quadrados:} Especialmente útil para a distribuição Normal
+\end{enumerate}
+
+\subsection{Organização do Documento}
+
+As distribuições estão organizadas por tipo:
+\begin{itemize}
+    \item \textbf{Seção 2:} Distribuições Discretas (Bernoulli, Binomial, Geométrica, Binomial Negativa, Poisson)
+    \item \textbf{Seção 3:} Distribuições Contínuas (Uniforme, Exponencial, Normal, Gamma, Chi-quadrado, Beta, Cauchy)
+\end{itemize}
+
+\newpage
+\section{Distribuições Discretas}
+
+\subsection{Distribuição de Bernoulli\((p)\)}
+
+\textbf{Definição:} \(X \sim \text{Bernoulli}(p)\) se \(P(X = 1) = p\) e \(P(X = 0) = 1-p\), onde \(0 < p < 1\).
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= \sum_{x=0}^{1} x \cdot P(X = x) \\
+&= 0 \cdot P(X = 0) + 1 \cdot P(X = 1) \\
+&= 0 \cdot (1-p) + 1 \cdot p \\
+&= p
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\begin{align}
+E(X^2) &= \sum_{x=0}^{1} x^2 \cdot P(X = x) \\
+&= 0^2 \cdot (1-p) + 1^2 \cdot p \\
+&= p
+\end{align}
+
+\textbf{Observação importante:} Para Bernoulli, \(X^2 = X\) pois \(X \in \{0,1\}\).
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= p - p^2 \\
+&= p(1-p)
+\end{align}
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+\textbf{Derivação da FGM:}
+\begin{align}
+M_X(t) &= E[e^{tX}] \\
+&= \sum_{x=0}^{1} e^{tx} P(X = x) \\
+&= e^{t \cdot 0} \cdot (1-p) + e^{t \cdot 1} \cdot p \\
+&= (1-p) + p e^t
+\end{align}
+
+\textbf{Primeira derivada:}
+\begin{align}
+M'_X(t) &= \frac{d}{dt}[(1-p) + p e^t] \\
+&= p e^t
+\end{align}
+
+\textbf{Cálculo de \(E(X)\):}
+\[
+E(X) = M'_X(0) = p e^0 = p
+\]
+
+\textbf{Segunda derivada:}
+\begin{align}
+M''_X(t) &= \frac{d}{dt}[p e^t] \\
+&= p e^t
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\[
+E(X^2) = M''_X(0) = p e^0 = p
+\]
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\[
+\text{Var}(X) = E(X^2) - [E(X)]^2 = p - p^2 = p(1-p)
+\]
+
+\subsection{Distribuição Binomial\((n, p)\)}
+
+\textbf{Definição:} \(X \sim \text{Binomial}(n, p)\) representa o número de sucessos em \(n\) ensaios de Bernoulli independentes, cada um com probabilidade \(p\) de sucesso.
+\[
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, \ldots, n
+\]
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= \sum_{k=0}^{n} k \cdot \binom{n}{k} p^k (1-p)^{n-k}
+\end{align}
+
+\textbf{Observação:} O termo \(k=0\) não contribui, então começamos de \(k=1\).
+
+\begin{align}
+E(X) &= \sum_{k=1}^{n} k \cdot \frac{n!}{k!(n-k)!} p^k (1-p)^{n-k}
+\end{align}
+
+\textbf{Técnica de simplificação:} Cancelamos \(k\) do numerador com \(k!\):
+\begin{align}
+E(X) &= \sum_{k=1}^{n} \frac{n!}{(k-1)!(n-k)!} p^k (1-p)^{n-k} \\
+&= \sum_{k=1}^{n} n \cdot \frac{(n-1)!}{(k-1)!(n-k)!} p^k (1-p)^{n-k} \\
+&= np \sum_{k=1}^{n} \frac{(n-1)!}{(k-1)![(n-1)-(k-1)]!} p^{k-1} (1-p)^{n-k}
+\end{align}
+
+\textbf{Mudança de índice:} Seja \(j = k-1\), então \(k=1 \Rightarrow j=0\) e \(k=n \Rightarrow j=n-1\):
+\begin{align}
+E(X) &= np \sum_{j=0}^{n-1} \binom{n-1}{j} p^j (1-p)^{(n-1)-j}
+\end{align}
+
+\textbf{Reconhecimento:} A soma é a expansão binomial de \([p + (1-p)]^{n-1} = 1\):
+\[
+E(X) = np \cdot 1 = np
+\]
+
+\textbf{Cálculo de \(E(X^2)\):}
+
+Usamos a identidade \(k^2 = k(k-1) + k\):
+\begin{align}
+E(X^2) &= E[X(X-1)] + E(X) \\
+&= E[X(X-1)] + np
+\end{align}
+
+Calculando \(E[X(X-1)]\):
+\begin{align}
+E[X(X-1)] &= \sum_{k=0}^{n} k(k-1) \binom{n}{k} p^k (1-p)^{n-k}
+\end{align}
+
+Os termos \(k=0\) e \(k=1\) são zero, então:
+\begin{align}
+E[X(X-1)] &= \sum_{k=2}^{n} k(k-1) \frac{n!}{k!(n-k)!} p^k (1-p)^{n-k} \\
+&= \sum_{k=2}^{n} \frac{n!}{(k-2)!(n-k)!} p^k (1-p)^{n-k} \\
+&= n(n-1)p^2 \sum_{k=2}^{n} \binom{n-2}{k-2} p^{k-2} (1-p)^{n-k}
+\end{align}
+
+Com \(j = k-2\):
+\begin{align}
+E[X(X-1)] &= n(n-1)p^2 \sum_{j=0}^{n-2} \binom{n-2}{j} p^j (1-p)^{(n-2)-j} \\
+&= n(n-1)p^2 \cdot 1 = n(n-1)p^2
+\end{align}
+
+Portanto:
+\begin{align}
+E(X^2) &= n(n-1)p^2 + np \\
+&= n^2p^2 - np^2 + np \\
+&= n^2p^2 + np(1-p)
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= n^2p^2 + np(1-p) - (np)^2 \\
+&= n^2p^2 + np(1-p) - n^2p^2 \\
+&= np(1-p)
+\end{align}
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+\textbf{Derivação da FGM:}
+
+Sabemos que \(X = \sum_{i=1}^{n} Y_i\) onde \(Y_i \sim \text{Bernoulli}(p)\) independentes.
+
+Como a FGM de uma soma de variáveis independentes é o produto das FGMs:
+\begin{align}
+M_X(t) &= \prod_{i=1}^{n} M_{Y_i}(t) \\
+&= [M_Y(t)]^n \\
+&= [(1-p) + pe^t]^n
+\end{align}
+
+\textbf{Primeira derivada (usando regra da cadeia):}
+\begin{align}
+M'_X(t) &= n[(1-p) + pe^t]^{n-1} \cdot pe^t \\
+&= npe^t[(1-p) + pe^t]^{n-1}
+\end{align}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= M'_X(0) \\
+&= npe^0[(1-p) + pe^0]^{n-1} \\
+&= np \cdot 1 \cdot [1-p + p]^{n-1} \\
+&= np \cdot 1^{n-1} = np
+\end{align}
+
+\textbf{Segunda derivada (usando regra do produto):}
+\begin{align}
+M''_X(t) &= \frac{d}{dt}\left[npe^t[(1-p) + pe^t]^{n-1}\right] \\
+&= npe^t[(1-p) + pe^t]^{n-1} + npe^t \cdot (n-1)[(1-p) + pe^t]^{n-2} \cdot pe^t \\
+&= npe^t[(1-p) + pe^t]^{n-1} + n(n-1)p^2e^{2t}[(1-p) + pe^t]^{n-2}
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\begin{align}
+E(X^2) &= M''_X(0) \\
+&= np \cdot 1 \cdot 1^{n-1} + n(n-1)p^2 \cdot 1 \cdot 1^{n-2} \\
+&= np + n(n-1)p^2 \\
+&= np + n^2p^2 - np^2 \\
+&= n^2p^2 + np(1-p)
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= n^2p^2 + np(1-p) - n^2p^2 \\
+&= np(1-p)
+\end{align}
+
+\subsection{Distribuição Geométrica\((p)\)}
+
+\textbf{Definição:} \(X \sim \text{Geométrica}(p)\) representa o número de tentativas até o primeiro sucesso (incluindo o sucesso).
+\[
+P(X = k) = (1-p)^{k-1} p, \quad k = 1, 2, 3, \ldots
+\]
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= \sum_{k=1}^{\infty} k \cdot (1-p)^{k-1} p \\
+&= p \sum_{k=1}^{\infty} k(1-p)^{k-1}
+\end{align}
+
+\textbf{Técnica:} Usamos a derivada da série geométrica. Sabemos que:
+\[
+\sum_{k=0}^{\infty} r^k = \frac{1}{1-r}, \quad |r| < 1
+\]
+
+Derivando ambos os lados em relação a \(r\):
+\[
+\sum_{k=1}^{\infty} kr^{k-1} = \frac{d}{dr}\left(\frac{1}{1-r}\right) = \frac{1}{(1-r)^2}
+\]
+
+Aplicando com \(r = 1-p\):
+\begin{align}
+E(X) &= p \cdot \frac{1}{[1-(1-p)]^2} \\
+&= p \cdot \frac{1}{p^2} \\
+&= \frac{1}{p}
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+
+Precisamos de \(\sum_{k=1}^{\infty} k^2 r^{k-1}\). 
+
+Partindo de \(\sum_{k=1}^{\infty} kr^{k-1} = \frac{1}{(1-r)^2}\), multiplicamos por \(r\):
+\[
+\sum_{k=1}^{\infty} kr^k = \frac{r}{(1-r)^2}
+\]
+
+Derivamos em relação a \(r\):
+\begin{align}
+\sum_{k=1}^{\infty} k^2r^{k-1} &= \frac{d}{dr}\left(\frac{r}{(1-r)^2}\right) \\
+&= \frac{(1-r)^2 - r \cdot 2(1-r)(-1)}{(1-r)^4} \\
+&= \frac{(1-r)^2 + 2r(1-r)}{(1-r)^4} \\
+&= \frac{(1-r)[(1-r) + 2r]}{(1-r)^4} \\
+&= \frac{1-r + 2r}{(1-r)^3} \\
+&= \frac{1+r}{(1-r)^3}
+\end{align}
+
+Com \(r = 1-p\):
+\begin{align}
+E(X^2) &= p \sum_{k=1}^{\infty} k^2(1-p)^{k-1} \\
+&= p \cdot \frac{1+(1-p)}{[1-(1-p)]^3} \\
+&= p \cdot \frac{2-p}{p^3} \\
+&= \frac{2-p}{p^2}
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= \frac{2-p}{p^2} - \frac{1}{p^2} \\
+&= \frac{2-p-1}{p^2} \\
+&= \frac{1-p}{p^2}
+\end{align}
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+\textbf{Derivação da FGM:}
+\begin{align}
+M_X(t) &= E[e^{tX}] \\
+&= \sum_{k=1}^{\infty} e^{tk} (1-p)^{k-1} p \\
+&= p \sum_{k=1}^{\infty} e^{tk} (1-p)^{k-1} \\
+&= p \sum_{k=1}^{\infty} [e^t(1-p)]^{k-1} \cdot e^t \\
+&= \frac{pe^t}{1-p} \sum_{k=1}^{\infty} [e^t(1-p)]^{k-1}
+\end{align}
+
+\textbf{Reconhecimento:} Série geométrica com razão \(r = e^t(1-p)\):
+\begin{align}
+M_X(t) &= \frac{pe^t}{1-p} \cdot \frac{1}{1 - e^t(1-p)} \\
+&= \frac{pe^t}{1-p - e^t(1-p)} \\
+&= \frac{pe^t}{1 - e^t + pe^t - p} \\
+&= \frac{pe^t}{1-p(1-e^t) - e^t} 
+\end{align}
+
+Forma mais simples:
+\[
+M_X(t) = \frac{pe^t}{1 - (1-p)e^t}, \quad \text{para } e^t(1-p) < 1
+\]
+
+\textbf{Primeira derivada:}
+
+Usando regra do quociente:
+\begin{align}
+M'_X(t) &= \frac{pe^t[1-(1-p)e^t] - pe^t[-(1-p)e^t]}{[1-(1-p)e^t]^2} \\
+&= \frac{pe^t - p(1-p)e^{2t} + p(1-p)e^{2t}}{[1-(1-p)e^t]^2} \\
+&= \frac{pe^t}{[1-(1-p)e^t]^2}
+\end{align}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= M'_X(0) \\
+&= \frac{p \cdot 1}{[1-(1-p) \cdot 1]^2} \\
+&= \frac{p}{p^2} = \frac{1}{p}
+\end{align}
+
+\textbf{Segunda derivada:}
+
+Usando regra do quociente em \(M'_X(t) = \frac{pe^t}{[1-(1-p)e^t]^2}\):
+\begin{align}
+M''_X(t) &= \frac{pe^t[1-(1-p)e^t]^2 - pe^t \cdot 2[1-(1-p)e^t] \cdot [-(1-p)e^t]}{[1-(1-p)e^t]^4} \\
+&= \frac{pe^t[1-(1-p)e^t] + 2pe^t(1-p)e^t}{[1-(1-p)e^t]^3} \\
+&= \frac{pe^t[1-(1-p)e^t + 2(1-p)e^t]}{[1-(1-p)e^t]^3} \\
+&= \frac{pe^t[1 + (1-p)e^t]}{[1-(1-p)e^t]^3}
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\begin{align}
+E(X^2) &= M''_X(0) \\
+&= \frac{p \cdot 1 \cdot [1 + (1-p)]}{[1-(1-p)]^3} \\
+&= \frac{p(2-p)}{p^3} \\
+&= \frac{2-p}{p^2}
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= \frac{2-p}{p^2} - \frac{1}{p^2} \\
+&= \frac{1-p}{p^2}
+\end{align}
+
+\subsection{Distribuição Binomial Negativa\((r, p)\)}
+
+\textbf{Definição:} \(X \sim \text{BinomialNegativa}(r, p)\) representa o número de tentativas até obter \(r\) sucessos.
+\[
+P(X = k) = \binom{k-1}{r-1} p^r (1-p)^{k-r}, \quad k = r, r+1, r+2, \ldots
+\]
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Observação:} \(X\) pode ser vista como a soma de \(r\) variáveis geométricas independentes: \(X = \sum_{i=1}^r Y_i\) onde \(Y_i \sim \text{Geométrica}(p)\).
+
+\textbf{Cálculo de \(E(X)\):}
+
+Pela linearidade da esperança:
+\begin{align}
+E(X) &= E\left[\sum_{i=1}^r Y_i\right] \\
+&= \sum_{i=1}^r E(Y_i) \\
+&= r \cdot \frac{1}{p} \\
+&= \frac{r}{p}
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+
+Como as \(Y_i\) são independentes:
+\begin{align}
+\text{Var}(X) &= \text{Var}\left(\sum_{i=1}^r Y_i\right) \\
+&= \sum_{i=1}^r \text{Var}(Y_i) \\
+&= r \cdot \frac{1-p}{p^2} \\
+&= \frac{r(1-p)}{p^2}
+\end{align}
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+Como \(X = \sum_{i=1}^r Y_i\) com \(Y_i\) independentes e identicamente distribuídas:
+
+\begin{align}
+M_X(t) &= \prod_{i=1}^r M_{Y_i}(t) \\
+&= [M_Y(t)]^r \\
+&= \left[\frac{pe^t}{1-(1-p)e^t}\right]^r
+\end{align}
+
+\textbf{Primeira derivada:}
+
+Usando regra da cadeia:
+\begin{align}
+M'_X(t) &= r\left[\frac{pe^t}{1-(1-p)e^t}\right]^{r-1} \cdot \frac{pe^t}{[1-(1-p)e^t]^2} \\
+&= r\left[\frac{pe^t}{1-(1-p)e^t}\right]^{r-1} \cdot \frac{pe^t}{[1-(1-p)e^t]^2} \\
+&= \frac{rp^re^{rt}}{[1-(1-p)e^t]^{r+1}}
+\end{align}
+
+Forma alternativa mais útil:
+\[
+M'_X(t) = r \cdot \frac{pe^t}{[1-(1-p)e^t]^2} \cdot \left[\frac{pe^t}{1-(1-p)e^t}\right]^{r-1}
+\]
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= M'_X(0) \\
+&= \frac{rp^r}{[1-(1-p)]^{r+1}} \\
+&= \frac{rp^r}{p^{r+1}} \\
+&= \frac{r}{p}
+\end{align}
+
+\textbf{Para \(E(X^2)\):} A derivada segunda é mais complexa, mas podemos usar que:
+\[
+\text{Var}(X) = \text{Var}\left(\sum_{i=1}^r Y_i\right) = r \cdot \text{Var}(Y) = \frac{r(1-p)}{p^2}
+\]
+
+E então:
+\[
+E(X^2) = \text{Var}(X) + [E(X)]^2 = \frac{r(1-p)}{p^2} + \frac{r^2}{p^2} = \frac{r(1-p) + r^2}{p^2}
+\]
+
+\subsection{Distribuição de Poisson\((\lambda)\)}
+
+\textbf{Definição:} \(X \sim \text{Poisson}(\lambda)\) modela o número de eventos em um intervalo fixo.
+\[
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots
+\]
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= \sum_{k=0}^{\infty} k \cdot \frac{\lambda^k e^{-\lambda}}{k!}
+\end{align}
+
+O termo \(k=0\) é zero, então:
+\begin{align}
+E(X) &= \sum_{k=1}^{\infty} k \cdot \frac{\lambda^k e^{-\lambda}}{k!} \\
+&= e^{-\lambda} \sum_{k=1}^{\infty} \frac{k \lambda^k}{k!} \\
+&= e^{-\lambda} \sum_{k=1}^{\infty} \frac{\lambda^k}{(k-1)!}
+\end{align}
+
+\textbf{Mudança de índice:} Seja \(j = k-1\):
+\begin{align}
+E(X) &= e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^{j+1}}{j!} \\
+&= e^{-\lambda} \lambda \sum_{j=0}^{\infty} \frac{\lambda^j}{j!}
+\end{align}
+
+\textbf{Reconhecimento:} A soma é a expansão de \(e^{\lambda}\):
+\begin{align}
+E(X) &= e^{-\lambda} \lambda \cdot e^{\lambda} \\
+&= \lambda
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+
+Usamos \(k^2 = k(k-1) + k\):
+\begin{align}
+E(X^2) &= E[X(X-1)] + E(X) \\
+&= E[X(X-1)] + \lambda
+\end{align}
+
+Calculando \(E[X(X-1)]\):
+\begin{align}
+E[X(X-1)] &= \sum_{k=0}^{\infty} k(k-1) \frac{\lambda^k e^{-\lambda}}{k!}
+\end{align}
+
+Os termos \(k=0\) e \(k=1\) são zero:
+\begin{align}
+E[X(X-1)] &= \sum_{k=2}^{\infty} k(k-1) \frac{\lambda^k e^{-\lambda}}{k!} \\
+&= e^{-\lambda} \sum_{k=2}^{\infty} \frac{k(k-1) \lambda^k}{k!} \\
+&= e^{-\lambda} \sum_{k=2}^{\infty} \frac{\lambda^k}{(k-2)!} \\
+&= e^{-\lambda} \lambda^2 \sum_{k=2}^{\infty} \frac{\lambda^{k-2}}{(k-2)!}
+\end{align}
+
+Com \(j = k-2\):
+\begin{align}
+E[X(X-1)] &= e^{-\lambda} \lambda^2 \sum_{j=0}^{\infty} \frac{\lambda^j}{j!} \\
+&= e^{-\lambda} \lambda^2 e^{\lambda} \\
+&= \lambda^2
+\end{align}
+
+Portanto:
+\begin{align}
+E(X^2) &= \lambda^2 + \lambda
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= \lambda^2 + \lambda - \lambda^2 \\
+&= \lambda
+\end{align}
+
+\textbf{Propriedade notável:} Para Poisson, \(E(X) = \text{Var}(X) = \lambda\).
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+\textbf{Derivação da FGM:}
+\begin{align}
+M_X(t) &= E[e^{tX}] \\
+&= \sum_{k=0}^{\infty} e^{tk} \frac{\lambda^k e^{-\lambda}}{k!} \\
+&= e^{-\lambda} \sum_{k=0}^{\infty} \frac{(e^t \lambda)^k}{k!}
+\end{align}
+
+\textbf{Reconhecimento:} Expansão de Taylor de \(e^{e^t\lambda}\):
+\begin{align}
+M_X(t) &= e^{-\lambda} \cdot e^{e^t\lambda} \\
+&= e^{\lambda(e^t - 1)}
+\end{align}
+
+\textbf{Primeira derivada:}
+\begin{align}
+M'_X(t) &= \frac{d}{dt} e^{\lambda(e^t - 1)} \\
+&= e^{\lambda(e^t - 1)} \cdot \lambda e^t \\
+&= \lambda e^t e^{\lambda(e^t - 1)}
+\end{align}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= M'_X(0) \\
+&= \lambda e^0 e^{\lambda(e^0 - 1)} \\
+&= \lambda \cdot 1 \cdot e^{\lambda(1-1)} \\
+&= \lambda \cdot e^0 = \lambda
+\end{align}
+
+\textbf{Segunda derivada (regra do produto):}
+\begin{align}
+M''_X(t) &= \frac{d}{dt}[\lambda e^t e^{\lambda(e^t - 1)}] \\
+&= \lambda e^t e^{\lambda(e^t - 1)} + \lambda e^t \cdot e^{\lambda(e^t - 1)} \cdot \lambda e^t \\
+&= \lambda e^t e^{\lambda(e^t - 1)} + \lambda^2 e^{2t} e^{\lambda(e^t - 1)} \\
+&= e^{\lambda(e^t - 1)} e^t [\lambda + \lambda^2 e^t]
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\begin{align}
+E(X^2) &= M''_X(0) \\
+&= e^0 \cdot 1 \cdot [\lambda + \lambda^2] \\
+&= \lambda + \lambda^2
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= \lambda + \lambda^2 - \lambda^2 \\
+&= \lambda
+\end{align}
+
+\newpage
+\section{Distribuições Contínuas}
+
+\subsection{Distribuição Uniforme\((a, b)\)}
+
+\textbf{Definição:} \(X \sim \text{Uniforme}(a, b)\) tem função de densidade:
+\[
+f(x) = \frac{1}{b-a}, \quad a < x < b
+\]
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= \int_{-\infty}^{\infty} x f(x) \, dx \\
+&= \int_a^b x \cdot \frac{1}{b-a} \, dx \\
+&= \frac{1}{b-a} \int_a^b x \, dx \\
+&= \frac{1}{b-a} \left[ \frac{x^2}{2} \right]_a^b \\
+&= \frac{1}{b-a} \cdot \frac{b^2 - a^2}{2} \\
+&= \frac{(b-a)(b+a)}{2(b-a)} \\
+&= \frac{a+b}{2}
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\begin{align}
+E(X^2) &= \int_a^b x^2 \cdot \frac{1}{b-a} \, dx \\
+&= \frac{1}{b-a} \left[ \frac{x^3}{3} \right]_a^b \\
+&= \frac{1}{b-a} \cdot \frac{b^3 - a^3}{3} \\
+&= \frac{b^3 - a^3}{3(b-a)}
+\end{align}
+
+\textbf{Simplificação:} Usamos \(b^3 - a^3 = (b-a)(b^2 + ab + a^2)\):
+\begin{align}
+E(X^2) &= \frac{(b-a)(b^2 + ab + a^2)}{3(b-a)} \\
+&= \frac{b^2 + ab + a^2}{3}
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= \frac{b^2 + ab + a^2}{3} - \left(\frac{a+b}{2}\right)^2 \\
+&= \frac{b^2 + ab + a^2}{3} - \frac{a^2 + 2ab + b^2}{4}
+\end{align}
+
+MMC de 3 e 4 é 12:
+\begin{align}
+\text{Var}(X) &= \frac{4(b^2 + ab + a^2) - 3(a^2 + 2ab + b^2)}{12} \\
+&= \frac{4b^2 + 4ab + 4a^2 - 3a^2 - 6ab - 3b^2}{12} \\
+&= \frac{b^2 - 2ab + a^2}{12} \\
+&= \frac{(b-a)^2}{12}
+\end{align}
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+\textbf{Derivação da FGM:}
+\begin{align}
+M_X(t) &= E[e^{tX}] \\
+&= \int_a^b e^{tx} \cdot \frac{1}{b-a} \, dx \\
+&= \frac{1}{b-a} \int_a^b e^{tx} \, dx \\
+&= \frac{1}{b-a} \left[ \frac{e^{tx}}{t} \right]_a^b \\
+&= \frac{e^{tb} - e^{ta}}{t(b-a)}, \quad t \neq 0
+\end{align}
+
+\textbf{Observação:} Para \(t = 0\), \(M_X(0) = 1\) (convenção).
+
+\textbf{Primeira derivada:}
+
+Usando regra do quociente:
+\begin{align}
+M'_X(t) &= \frac{d}{dt}\left[\frac{e^{tb} - e^{ta}}{t(b-a)}\right] \\
+&= \frac{(be^{tb} - ae^{ta}) \cdot t(b-a) - (e^{tb} - e^{ta}) \cdot (b-a)}{t^2(b-a)^2} \\
+&= \frac{t(be^{tb} - ae^{ta}) - (e^{tb} - e^{ta})}{t^2(b-a)}
+\end{align}
+
+\textbf{Cálculo de \(E(X)\):} Usando regra de L'Hôpital ou expansão de Taylor:
+
+Para \(t \to 0\), usando \(e^{tx} \approx 1 + tx + \frac{t^2x^2}{2}\):
+\begin{align}
+M'_X(0) &= \lim_{t \to 0} \frac{t(be^{tb} - ae^{ta}) - (e^{tb} - e^{ta})}{t^2(b-a)} \\
+&= \lim_{t \to 0} \frac{t[b(1+tb+\cdots) - a(1+ta+\cdots)] - [(1+tb+\cdots)-(1+ta+\cdots)]}{t^2(b-a)} \\
+&= \lim_{t \to 0} \frac{t(b-a) + t^2(b^2-a^2)/2 - t(b-a)}{t^2(b-a)} \\
+&= \lim_{t \to 0} \frac{t^2(b^2-a^2)/2}{t^2(b-a)} \\
+&= \frac{b^2-a^2}{2(b-a)} = \frac{(b-a)(b+a)}{2(b-a)} = \frac{a+b}{2}
+\end{align}
+
+\textbf{Para \(\text{Var}(X)\):} O cálculo de \(M''_X(0)\) é trabalhoso. Aceitamos o resultado:
+\[
+\text{Var}(X) = \frac{(b-a)^2}{12}
+\]
+
+\subsection{Distribuição Exponencial\((\lambda)\)}
+
+\textbf{Definição:} \(X \sim \text{Exponencial}(\lambda)\) tem densidade:
+\[
+f(x) = \lambda e^{-\lambda x}, \quad x > 0, \, \lambda > 0
+\]
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= \int_0^{\infty} x \lambda e^{-\lambda x} \, dx
+\end{align}
+
+\textbf{Integração por partes:} Seja \(u = x\), \(dv = \lambda e^{-\lambda x} dx\).
+
+Então \(du = dx\) e \(v = -e^{-\lambda x}\):
+\begin{align}
+E(X) &= \left[ -x e^{-\lambda x} \right]_0^{\infty} + \int_0^{\infty} e^{-\lambda x} \, dx
+\end{align}
+
+O primeiro termo: \(\lim_{x \to \infty} -xe^{-\lambda x} = 0\) (por L'Hôpital) e em \(x=0\) é zero.
+
+\begin{align}
+E(X) &= 0 + \left[ -\frac{e^{-\lambda x}}{\lambda} \right]_0^{\infty} \\
+&= 0 - \left(-\frac{1}{\lambda}\right) \\
+&= \frac{1}{\lambda}
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\begin{align}
+E(X^2) &= \int_0^{\infty} x^2 \lambda e^{-\lambda x} \, dx
+\end{align}
+
+\textbf{Integração por partes:} Seja \(u = x^2\), \(dv = \lambda e^{-\lambda x} dx\).
+
+Então \(du = 2x \, dx\) e \(v = -e^{-\lambda x}\):
+\begin{align}
+E(X^2) &= \left[ -x^2 e^{-\lambda x} \right]_0^{\infty} + \int_0^{\infty} 2x e^{-\lambda x} \, dx \\
+&= 0 + 2 \int_0^{\infty} x e^{-\lambda x} \, dx
+\end{align}
+
+\textbf{Segunda integração por partes:} Seja \(u = x\), \(dv = e^{-\lambda x} dx\):
+\begin{align}
+\int_0^{\infty} x e^{-\lambda x} \, dx &= \left[ -\frac{x e^{-\lambda x}}{\lambda} \right]_0^{\infty} + \frac{1}{\lambda} \int_0^{\infty} e^{-\lambda x} \, dx \\
+&= 0 + \frac{1}{\lambda} \cdot \frac{1}{\lambda} \\
+&= \frac{1}{\lambda^2}
+\end{align}
+
+Portanto:
+\begin{align}
+E(X^2) &= 2 \cdot \frac{1}{\lambda^2} = \frac{2}{\lambda^2}
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= \frac{2}{\lambda^2} - \frac{1}{\lambda^2} \\
+&= \frac{1}{\lambda^2}
+\end{align}
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+\textbf{Derivação da FGM:}
+\begin{align}
+M_X(t) &= E[e^{tX}] \\
+&= \int_0^{\infty} e^{tx} \lambda e^{-\lambda x} \, dx \\
+&= \lambda \int_0^{\infty} e^{-(\lambda - t)x} \, dx
+\end{align}
+
+Para \(t < \lambda\):
+\begin{align}
+M_X(t) &= \lambda \left[ \frac{e^{-(\lambda-t)x}}{-(\lambda-t)} \right]_0^{\infty} \\
+&= \lambda \cdot \frac{1}{\lambda - t} \cdot \left[ 0 - (-1) \right] \\
+&= \frac{\lambda}{\lambda - t}
+\end{align}
+
+\textbf{Primeira derivada:}
+\begin{align}
+M'_X(t) &= \frac{d}{dt}\left[\frac{\lambda}{\lambda - t}\right] \\
+&= \lambda \cdot \frac{d}{dt}[(\lambda - t)^{-1}] \\
+&= \lambda \cdot (-1)(\lambda - t)^{-2} \cdot (-1) \\
+&= \frac{\lambda}{(\lambda - t)^2}
+\end{align}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= M'_X(0) = \frac{\lambda}{\lambda^2} = \frac{1}{\lambda}
+\end{align}
+
+\textbf{Segunda derivada:}
+\begin{align}
+M''_X(t) &= \frac{d}{dt}\left[\frac{\lambda}{(\lambda - t)^2}\right] \\
+&= \lambda \cdot (-2)(\lambda - t)^{-3} \cdot (-1) \\
+&= \frac{2\lambda}{(\lambda - t)^3}
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\begin{align}
+E(X^2) &= M''_X(0) = \frac{2\lambda}{\lambda^3} = \frac{2}{\lambda^2}
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= \frac{2}{\lambda^2} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
+\end{align}
+
+\subsection{Distribuição Normal\((\mu, \sigma^2)\)}
+
+\textbf{Definição:} \(X \sim N(\mu, \sigma^2)\) tem densidade:
+\[
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right), \quad -\infty < x < \infty
+\]
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Cálculo de \(E(X)\):}
+
+Fazemos mudança de variável: \(z = \frac{x-\mu}{\sigma}\), então \(x = \sigma z + \mu\) e \(dx = \sigma \, dz\):
+\begin{align}
+E(X) &= \int_{-\infty}^{\infty} x \cdot \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right) dx \\
+&= \int_{-\infty}^{\infty} (\sigma z + \mu) \cdot \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \, dz \\
+&= \sigma \int_{-\infty}^{\infty} z \cdot \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \, dz + \mu \int_{-\infty}^{\infty} \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \, dz
+\end{align}
+
+\textbf{Primeira integral:} A função \(z e^{-z^2/2}\) é ímpar, logo sua integral sobre \(\mathbb{R}\) é zero.
+
+\textbf{Segunda integral:} É a integral da densidade normal padrão, igual a 1.
+
+Portanto:
+\[
+E(X) = \sigma \cdot 0 + \mu \cdot 1 = \mu
+\]
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+
+Por definição, \(\text{Var}(X) = E[(X-\mu)^2]\).
+
+Com \(z = (x-\mu)/\sigma\):
+\begin{align}
+\text{Var}(X) &= E[(X-\mu)^2] \\
+&= \int_{-\infty}^{\infty} (x-\mu)^2 \cdot \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right) dx \\
+&= \int_{-\infty}^{\infty} \sigma^2 z^2 \cdot \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \, dz \\
+&= \sigma^2 \int_{-\infty}^{\infty} z^2 \cdot \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \, dz
+\end{align}
+
+\textbf{Cálculo da integral:} Usamos integração por partes. Seja \(u = z\), \(dv = z e^{-z^2/2} dz\):
+
+Então \(du = dz\) e \(v = -e^{-z^2/2}\):
+\begin{align}
+\int_{-\infty}^{\infty} z^2 e^{-z^2/2} \, dz &= \left[ -z e^{-z^2/2} \right]_{-\infty}^{\infty} + \int_{-\infty}^{\infty} e^{-z^2/2} \, dz \\
+&= 0 + \sqrt{2\pi}
+\end{align}
+
+Portanto:
+\[
+\text{Var}(X) = \sigma^2 \cdot \frac{\sqrt{2\pi}}{\sqrt{2\pi}} = \sigma^2
+\]
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+A FGM da distribuição Normal é conhecida:
+\[
+M_X(t) = \exp\left(\mu t + \frac{\sigma^2 t^2}{2}\right)
+\]
+
+\textbf{Derivação (sketch):} Para \(Z \sim N(0,1)\) padrão:
+\begin{align}
+M_Z(t) &= \int_{-\infty}^{\infty} e^{tz} \cdot \frac{1}{\sqrt{2\pi}} e^{-z^2/2} \, dz \\
+&= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \exp\left(-\frac{z^2}{2} + tz\right) dz
+\end{align}
+
+\textbf{Completando o quadrado:}
+\[
+-\frac{z^2}{2} + tz = -\frac{1}{2}(z^2 - 2tz) = -\frac{1}{2}(z-t)^2 + \frac{t^2}{2}
+\]
+
+Logo:
+\begin{align}
+M_Z(t) &= e^{t^2/2} \cdot \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} e^{-(z-t)^2/2} \, dz \\
+&= e^{t^2/2} \cdot 1 = e^{t^2/2}
+\end{align}
+
+Para \(X = \sigma Z + \mu\):
+\[
+M_X(t) = E[e^{t(\sigma Z + \mu)}] = e^{\mu t} M_Z(\sigma t) = e^{\mu t} e^{\sigma^2 t^2/2} = \exp\left(\mu t + \frac{\sigma^2 t^2}{2}\right)
+\]
+
+\textbf{Primeira derivada:}
+\begin{align}
+M'_X(t) &= \exp\left(\mu t + \frac{\sigma^2 t^2}{2}\right) \cdot \left(\mu + \sigma^2 t\right)
+\end{align}
+
+\textbf{Cálculo de \(E(X)\):}
+\[
+E(X) = M'_X(0) = e^0 \cdot (\mu + 0) = \mu
+\]
+
+\textbf{Segunda derivada:}
+\begin{align}
+M''_X(t) &= \exp\left(\mu t + \frac{\sigma^2 t^2}{2}\right) \cdot (\mu + \sigma^2 t)^2 + \exp\left(\mu t + \frac{\sigma^2 t^2}{2}\right) \cdot \sigma^2 \\
+&= \exp\left(\mu t + \frac{\sigma^2 t^2}{2}\right) \left[(\mu + \sigma^2 t)^2 + \sigma^2\right]
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\[
+E(X^2) = M''_X(0) = 1 \cdot [\mu^2 + \sigma^2] = \mu^2 + \sigma^2
+\]
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\[
+\text{Var}(X) = E(X^2) - [E(X)]^2 = \mu^2 + \sigma^2 - \mu^2 = \sigma^2
+\]
+
+\subsection{Distribuição Gamma\((\alpha, \beta)\)}
+
+\textbf{Definição:} \(X \sim \text{Gamma}(\alpha, \beta)\) tem densidade:
+\[
+f(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x}, \quad x > 0, \, \alpha, \beta > 0
+\]
+
+onde \(\Gamma(\alpha) = \int_0^{\infty} t^{\alpha-1} e^{-t} \, dt\) é a função Gamma.
+
+\textbf{Propriedade importante:} \(\Gamma(\alpha + 1) = \alpha \Gamma(\alpha)\).
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= \int_0^{\infty} x \cdot \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x} \, dx \\
+&= \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^{\infty} x^\alpha e^{-\beta x} \, dx
+\end{align}
+
+\textbf{Mudança de variável:} Seja \(u = \beta x\), então \(x = u/\beta\) e \(dx = du/\beta\):
+\begin{align}
+E(X) &= \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^{\infty} \left(\frac{u}{\beta}\right)^\alpha e^{-u} \frac{du}{\beta} \\
+&= \frac{\beta^\alpha}{\Gamma(\alpha)} \cdot \frac{1}{\beta^{\alpha+1}} \int_0^{\infty} u^\alpha e^{-u} \, du \\
+&= \frac{1}{\beta \Gamma(\alpha)} \int_0^{\infty} u^\alpha e^{-u} \, du
+\end{align}
+
+\textbf{Reconhecimento:} \(\int_0^{\infty} u^\alpha e^{-u} \, du = \Gamma(\alpha + 1) = \alpha \Gamma(\alpha)\):
+\[
+E(X) = \frac{\alpha \Gamma(\alpha)}{\beta \Gamma(\alpha)} = \frac{\alpha}{\beta}
+\]
+
+\textbf{Cálculo de \(E(X^2)\):}
+\begin{align}
+E(X^2) &= \int_0^{\infty} x^2 \cdot \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x} \, dx \\
+&= \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^{\infty} x^{\alpha+1} e^{-\beta x} \, dx
+\end{align}
+
+Com \(u = \beta x\):
+\begin{align}
+E(X^2) &= \frac{\beta^\alpha}{\Gamma(\alpha)} \cdot \frac{1}{\beta^{\alpha+2}} \int_0^{\infty} u^{\alpha+1} e^{-u} \, du \\
+&= \frac{1}{\beta^2 \Gamma(\alpha)} \cdot \Gamma(\alpha + 2) \\
+&= \frac{(\alpha+1)\alpha \Gamma(\alpha)}{\beta^2 \Gamma(\alpha)} \\
+&= \frac{\alpha(\alpha+1)}{\beta^2}
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= \frac{\alpha(\alpha+1)}{\beta^2} - \frac{\alpha^2}{\beta^2} \\
+&= \frac{\alpha^2 + \alpha - \alpha^2}{\beta^2} \\
+&= \frac{\alpha}{\beta^2}
+\end{align}
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+\textbf{Derivação da FGM:}
+\begin{align}
+M_X(t) &= \int_0^{\infty} e^{tx} \cdot \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x} \, dx \\
+&= \frac{\beta^\alpha}{\Gamma(\alpha)} \int_0^{\infty} x^{\alpha-1} e^{-(\beta - t)x} \, dx
+\end{align}
+
+Para \(t < \beta\), com \(u = (\beta - t)x\):
+\begin{align}
+M_X(t) &= \frac{\beta^\alpha}{\Gamma(\alpha)} \cdot \frac{1}{(\beta-t)^\alpha} \int_0^{\infty} u^{\alpha-1} e^{-u} \, du \\
+&= \frac{\beta^\alpha}{(\beta-t)^\alpha} \cdot \frac{\Gamma(\alpha)}{\Gamma(\alpha)} \\
+&= \left(\frac{\beta}{\beta-t}\right)^\alpha
+\end{align}
+
+\textbf{Primeira derivada:}
+\begin{align}
+M'_X(t) &= \alpha \left(\frac{\beta}{\beta-t}\right)^{\alpha-1} \cdot \frac{\beta}{(\beta-t)^2} \\
+&= \frac{\alpha \beta^\alpha}{(\beta-t)^{\alpha+1}}
+\end{align}
+
+\textbf{Cálculo de \(E(X)\):}
+\[
+E(X) = M'_X(0) = \frac{\alpha \beta^\alpha}{\beta^{\alpha+1}} = \frac{\alpha}{\beta}
+\]
+
+\textbf{Segunda derivada:}
+\begin{align}
+M''_X(t) &= \alpha \beta^\alpha \cdot (-(\alpha+1))(\beta-t)^{-\alpha-2} \cdot (-1) \\
+&= \frac{\alpha(\alpha+1) \beta^\alpha}{(\beta-t)^{\alpha+2}}
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\[
+E(X^2) = M''_X(0) = \frac{\alpha(\alpha+1) \beta^\alpha}{\beta^{\alpha+2}} = \frac{\alpha(\alpha+1)}{\beta^2}
+\]
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\[
+\text{Var}(X) = \frac{\alpha(\alpha+1)}{\beta^2} - \frac{\alpha^2}{\beta^2} = \frac{\alpha}{\beta^2}
+\]
+
+\subsection{Distribuição Chi-quadrado\((k)\)}
+
+\textbf{Definição:} \(X \sim \chi^2_k\) (chi-quadrado com \(k\) graus de liberdade) é um caso especial de Gamma:
+\[
+\chi^2_k \equiv \text{Gamma}\left(\frac{k}{2}, \frac{1}{2}\right)
+\]
+
+Densidade:
+\[
+f(x) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{k/2-1} e^{-x/2}, \quad x > 0
+\]
+
+\subsubsection{Método 1: Usando a relação com Gamma}
+
+Como \(\chi^2_k \sim \text{Gamma}(k/2, 1/2)\), aplicamos as fórmulas da Gamma com \(\alpha = k/2\) e \(\beta = 1/2\):
+
+\textbf{Cálculo de \(E(X)\):}
+\[
+E(X) = \frac{\alpha}{\beta} = \frac{k/2}{1/2} = k
+\]
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\[
+\text{Var}(X) = \frac{\alpha}{\beta^2} = \frac{k/2}{(1/2)^2} = \frac{k/2}{1/4} = 2k
+\]
+
+\subsubsection{Método 2: Pela Função Geradora de Momentos}
+
+Como \(\chi^2_k \sim \text{Gamma}(k/2, 1/2)\):
+\[
+M_X(t) = \left(\frac{1/2}{1/2-t}\right)^{k/2} = \left(\frac{1}{1-2t}\right)^{k/2} = (1-2t)^{-k/2}, \quad t < \frac{1}{2}
+\]
+
+\textbf{Primeira derivada:}
+\begin{align}
+M'_X(t) &= -\frac{k}{2} (1-2t)^{-k/2-1} \cdot (-2) \\
+&= k(1-2t)^{-k/2-1}
+\end{align}
+
+\textbf{Cálculo de \(E(X)\):}
+\[
+E(X) = M'_X(0) = k \cdot 1^{-k/2-1} = k
+\]
+
+\textbf{Segunda derivada:}
+\begin{align}
+M''_X(t) &= k \cdot \left(-\frac{k}{2}-1\right)(1-2t)^{-k/2-2} \cdot (-2) \\
+&= k(k+2)(1-2t)^{-k/2-2}
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\[
+E(X^2) = M''_X(0) = k(k+2)
+\]
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\[
+\text{Var}(X) = k(k+2) - k^2 = k^2 + 2k - k^2 = 2k
+\]
+
+\subsection{Distribuição Beta\((\alpha, \beta)\)}
+
+\textbf{Definição:} \(X \sim \text{Beta}(\alpha, \beta)\) tem densidade:
+\[
+f(x) = \frac{1}{B(\alpha, \beta)} x^{\alpha-1}(1-x)^{\beta-1}, \quad 0 < x < 1, \, \alpha, \beta > 0
+\]
+
+onde \(B(\alpha, \beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}\) é a função Beta.
+
+\textbf{Propriedade importante:}
+\[
+B(\alpha+k, \beta) = \frac{\Gamma(\alpha+k)\Gamma(\beta)}{\Gamma(\alpha+\beta+k)}
+\]
+
+\subsubsection{Método 1: Pela Definição}
+
+\textbf{Cálculo de \(E(X)\):}
+\begin{align}
+E(X) &= \int_0^1 x \cdot \frac{1}{B(\alpha, \beta)} x^{\alpha-1}(1-x)^{\beta-1} \, dx \\
+&= \frac{1}{B(\alpha, \beta)} \int_0^1 x^\alpha (1-x)^{\beta-1} \, dx
+\end{align}
+
+\textbf{Reconhecimento:} A integral é \(B(\alpha+1, \beta)\):
+\begin{align}
+E(X) &= \frac{B(\alpha+1, \beta)}{B(\alpha, \beta)} \\
+&= \frac{\Gamma(\alpha+1)\Gamma(\beta)/\Gamma(\alpha+\beta+1)}{\Gamma(\alpha)\Gamma(\beta)/\Gamma(\alpha+\beta)} \\
+&= \frac{\Gamma(\alpha+1)}{\Gamma(\alpha)} \cdot \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha+\beta+1)}
+\end{align}
+
+Usando \(\Gamma(n+1) = n\Gamma(n)\):
+\begin{align}
+E(X) &= \alpha \cdot \frac{1}{\alpha+\beta} = \frac{\alpha}{\alpha+\beta}
+\end{align}
+
+\textbf{Cálculo de \(E(X^2)\):}
+\begin{align}
+E(X^2) &= \frac{1}{B(\alpha, \beta)} \int_0^1 x^{\alpha+1} (1-x)^{\beta-1} \, dx \\
+&= \frac{B(\alpha+2, \beta)}{B(\alpha, \beta)}
+\end{align}
+
+Desenvolvendo:
+\begin{align}
+E(X^2) &= \frac{\Gamma(\alpha+2)\Gamma(\beta)/\Gamma(\alpha+\beta+2)}{\Gamma(\alpha)\Gamma(\beta)/\Gamma(\alpha+\beta)} \\
+&= \frac{\Gamma(\alpha+2)}{\Gamma(\alpha)} \cdot \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha+\beta+2)} \\
+&= \frac{(\alpha+1)\alpha \Gamma(\alpha)}{\Gamma(\alpha)} \cdot \frac{\Gamma(\alpha+\beta)}{(\alpha+\beta+1)(\alpha+\beta)\Gamma(\alpha+\beta)} \\
+&= \frac{\alpha(\alpha+1)}{(\alpha+\beta)(\alpha+\beta+1)}
+\end{align}
+
+\textbf{Cálculo de \(\text{Var}(X)\):}
+\begin{align}
+\text{Var}(X) &= E(X^2) - [E(X)]^2 \\
+&= \frac{\alpha(\alpha+1)}{(\alpha+\beta)(\alpha+\beta+1)} - \frac{\alpha^2}{(\alpha+\beta)^2}
+\end{align}
+
+MMC:
+\begin{align}
+\text{Var}(X) &= \frac{\alpha(\alpha+1)(\alpha+\beta) - \alpha^2(\alpha+\beta+1)}{(\alpha+\beta)^2(\alpha+\beta+1)} \\
+&= \frac{\alpha[(\alpha+1)(\alpha+\beta) - \alpha(\alpha+\beta+1)]}{(\alpha+\beta)^2(\alpha+\beta+1)} \\
+&= \frac{\alpha[\alpha^2+\alpha+\alpha\beta+\beta - \alpha^2-\alpha\beta-\alpha]}{(\alpha+\beta)^2(\alpha+\beta+1)} \\
+&= \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}
+\end{align}
+
+\subsubsection{Método 2: Usando Fórmula de Momentos}
+
+A distribuição Beta não tem FGM em forma fechada simples, mas podemos usar a fórmula geral para momentos:
+\[
+E(X^k) = \prod_{i=0}^{k-1} \frac{\alpha+i}{\alpha+\beta+i}
+\]
+
+\textbf{Para \(k=1\):}
+\[
+E(X) = \frac{\alpha}{\alpha+\beta}
+\]
+
+\textbf{Para \(k=2\):}
+\[
+E(X^2) = \frac{\alpha}{\alpha+\beta} \cdot \frac{\alpha+1}{\alpha+\beta+1} = \frac{\alpha(\alpha+1)}{(\alpha+\beta)(\alpha+\beta+1)}
+\]
+
+\textbf{Variância:}
+\[
+\text{Var}(X) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}
+\]
+
+\subsection{Distribuição de Cauchy\((x_0, \gamma)\)}
+
+\textbf{Definição:} \(X \sim \text{Cauchy}(x_0, \gamma)\) tem densidade:
+\[
+f(x) = \frac{1}{\pi\gamma\left[1 + \left(\frac{x-x_0}{\gamma}\right)^2\right]}, \quad -\infty < x < \infty
+\]
+
+Para a Cauchy padrão, \(x_0 = 0\) e \(\gamma = 1\):
+\[
+f(x) = \frac{1}{\pi(1+x^2)}
+\]
+
+\subsubsection{Método 1: Mostrando que E(X) não existe}
+
+Para a Cauchy padrão, tentamos calcular:
+\begin{align}
+E(|X|) &= \int_{-\infty}^{\infty} |x| \cdot \frac{1}{\pi(1+x^2)} \, dx \\
+&= \frac{2}{\pi} \int_0^{\infty} \frac{x}{1+x^2} \, dx
+\end{align}
+
+\textbf{Substituição:} Seja \(u = 1 + x^2\), então \(du = 2x \, dx\):
+\begin{align}
+E(|X|) &= \frac{2}{\pi} \cdot \frac{1}{2} \int_1^{\infty} \frac{du}{u} \\
+&= \frac{1}{\pi} [\ln u]_1^{\infty} \\
+&= \frac{1}{\pi} \cdot \infty = \infty
+\end{align}
+
+\textbf{Conclusão:} Como \(E(|X|) = \infty\), a esperança \(E(X)\) não existe (mesmo como integral imprópria).
+
+\textbf{Consequência:} Se \(E(X)\) não existe, então \(\text{Var}(X)\) também não existe.
+
+\subsubsection{Método 2: Função Geradora de Momentos}
+
+A FGM da distribuição de Cauchy \textbf{não existe} para nenhum \(t \neq 0\). 
+
+Tentando calcular:
+\[
+M_X(t) = E[e^{tX}] = \int_{-\infty}^{\infty} e^{tx} \cdot \frac{1}{\pi(1+x^2)} \, dx
+\]
+
+Esta integral diverge para qualquer \(t \neq 0\).
+
+\textbf{Alternativa:} Usa-se a \emph{função característica}:
+\[
+\phi_X(t) = E[e^{itX}] = e^{-|t|}
+\]
+
+que existe, mas não permite calcular momentos pois estes não existem.
+
+\textbf{Observações importantes:}
+\begin{enumerate}
+    \item A Cauchy é o exemplo clássico de distribuição sem média nem variância.
+    \item A soma de Cauchys independentes é ainda Cauchy (não converge para Normal pelo TCL).
+    \item Distribuições de "caudas pesadas" podem não ter momentos finitos.
+\end{enumerate}
+
+\newpage
+\section{Resumo e Tabela Consolidada}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Distribuição} & \textbf{FGM} \(M_X(t)\) & \(E(X)\) & \(\text{Var}(X)\) \\
+\hline
+\hline
+Bernoulli\((p)\) & \((1-p) + pe^t\) & \(p\) & \(p(1-p)\) \\
+\hline
+Binomial\((n,p)\) & \([(1-p) + pe^t]^n\) & \(np\) & \(np(1-p)\) \\
+\hline
+Geométrica\((p)\) & \(\frac{pe^t}{1-(1-p)e^t}\) & \(\frac{1}{p}\) & \(\frac{1-p}{p^2}\) \\
+\hline
+Bin. Negativa\((r,p)\) & \(\left[\frac{pe^t}{1-(1-p)e^t}\right]^r\) & \(\frac{r}{p}\) & \(\frac{r(1-p)}{p^2}\) \\
+\hline
+Poisson\((\lambda)\) & \(e^{\lambda(e^t-1)}\) & \(\lambda\) & \(\lambda\) \\
+\hline
+\hline
+Uniforme\((a,b)\) & \(\frac{e^{tb}-e^{ta}}{t(b-a)}\) & \(\frac{a+b}{2}\) & \(\frac{(b-a)^2}{12}\) \\
+\hline
+Exponencial\((\lambda)\) & \(\frac{\lambda}{\lambda-t}\) & \(\frac{1}{\lambda}\) & \(\frac{1}{\lambda^2}\) \\
+\hline
+Normal\((\mu,\sigma^2)\) & \(e^{\mu t + \sigma^2t^2/2}\) & \(\mu\) & \(\sigma^2\) \\
+\hline
+Gamma\((\alpha,\beta)\) & \(\left(\frac{\beta}{\beta-t}\right)^\alpha\) & \(\frac{\alpha}{\beta}\) & \(\frac{\alpha}{\beta^2}\) \\
+\hline
+Chi-quadrado\((k)\) & \((1-2t)^{-k/2}\) & \(k\) & \(2k\) \\
+\hline
+Beta\((\alpha,\beta)\) & --- & \(\frac{\alpha}{\alpha+\beta}\) & \(\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}\) \\
+\hline
+Cauchy\((x_0,\gamma)\) & Não existe & Não existe & Não existe \\
+\hline
+\end{tabular}
+\caption{Resumo de FGMs, Médias e Variâncias}
+\end{table}
+
+\subsection{Observações Finais para Estudo}
+
+\begin{enumerate}
+    \item \textbf{Técnicas mais importantes:}
+    \begin{itemize}
+        \item Mudança de índice em somatórios (Binomial, Poisson)
+        \item Integração por partes (Exponencial, Gamma, Normal)
+        \item Uso de funções normalizadoras (Gamma, Beta)
+        \item Completar quadrados (Normal)
+        \item Séries geométricas e suas derivadas (Geométrica)
+    \end{itemize}
+    
+    \item \textbf{Relações entre distribuições:}
+    \begin{itemize}
+        \item Binomial Negativa é soma de Geométricas
+        \item Binomial é soma de Bernoullis
+        \item Chi-quadrado é caso especial de Gamma
+        \item Normal pode ser obtida via TCL
+    \end{itemize}
+    
+    \item \textbf{Casos especiais de atenção:}
+    \begin{itemize}
+        \item Poisson: \(E(X) = \text{Var}(X) = \lambda\)
+        \item Bernoulli: \(X^2 = X\), logo \(E(X^2) = E(X)\)
+        \item Cauchy: nem média nem variância existem
+        \item Beta: FGM não tem forma fechada simples
+    \end{itemize}
+    
+    \item \textbf{Dicas para a prova:}
+    \begin{itemize}
+        \item Sempre verifique se pode usar simetria ou propriedades especiais
+        \item Reconheça quando uma integral/soma é uma constante normalizadora
+        \item Para FGM, lembre que \(M_X(0) = 1\) sempre
+        \item Verifique dimensões: taxa vs. escala em Exponencial e Gamma
+    \end{itemize}
+\end{enumerate}
+
+\end{document}
+
